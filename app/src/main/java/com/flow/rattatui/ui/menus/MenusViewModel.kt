@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class TransformViewModel : ViewModel() {
+class MenusViewModel : ViewModel() {
 
     private val _texts = MutableLiveData<List<String>>().apply {
-        value = (1..16).mapIndexed { _, i ->
+        value = (1..5).mapIndexed { _, i ->
             "This is menu item # $i"
         }
     }
