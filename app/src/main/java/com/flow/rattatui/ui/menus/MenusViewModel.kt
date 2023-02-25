@@ -12,5 +12,14 @@ class MenusViewModel : ViewModel() {
         }
     }
 
+    private val _name = MutableLiveData<List<String>>().apply {
+        value = (1..5).mapIndexed { _, i ->
+            "This is menu # $i"
+        }
+    }
+
     val texts: LiveData<List<String>> = _texts
+
+    val name: LiveData<List<String>> = _name
+
 }
