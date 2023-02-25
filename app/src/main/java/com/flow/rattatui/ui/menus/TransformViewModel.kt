@@ -1,4 +1,4 @@
-package com.flow.rattatui.ui.transform
+package com.flow.rattatui.ui.menus
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ class TransformViewModel : ViewModel() {
 
     private val _texts = MutableLiveData<List<String>>().apply {
         value = (1..16).mapIndexed { _, i ->
-            "This is item # $i"
+            "This is menu item # $i"
         }
     }
 

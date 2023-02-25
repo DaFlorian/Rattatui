@@ -1,4 +1,4 @@
-package com.flow.rattatui.ui.transform
+package com.flow.rattatui.ui.menus
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,7 +22,7 @@ import com.flow.rattatui.databinding.ItemTransformBinding
  * the [RecyclerView] using LinearLayoutManager in a small screen
  * and shows items using GridLayoutManager in a large screen.
  */
-class TransformFragment : Fragment() {
+class MenusFragment : Fragment() {
 
     private var _binding: FragmentTransformBinding? = null
 
