@@ -1,8 +1,10 @@
 package com.flow.rattatui.ui.menus
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+
 
 class MenusViewModel : ViewModel() {
 
@@ -19,7 +21,7 @@ class MenusViewModel : ViewModel() {
     }
 
     val texts: LiveData<List<String>> = _texts
-
     val name: LiveData<List<String>> = _name
+
 
 }

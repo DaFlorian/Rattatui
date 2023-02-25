@@ -1,6 +1,8 @@
 package com.flow.rattatui
 
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
@@ -13,11 +15,19 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.appcompat.app.AppCompatActivity
 import com.flow.rattatui.databinding.ActivityMainBinding
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.nio.ByteBuffer
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val result = super.onCreateOptionsMenu(menu)
         // Using findViewById because NavigationView exists in different layout files
@@ -69,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         return result
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_settings -> {
@@ -79,8 +91,44 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+
+    private fun createFile(buffer: ByteBuffer): File {
+        // Function to create a file system object from the buffer of a captured image
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US)
+        val simpleDateString = simpleDateFormat.format(Date())
+        val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + "/shoppingbuddy_$simpleDateString.jpeg")
+        Log.d("Info", "Saving image... Path: $file")
+
+        try {
+            if (file.exists()) {file.delete()}
+            val bytes = ByteArray(buffer.capacity())
+            buffer.get(bytes)
+            var output: OutputStream? = null
+            try {
+                if (!file.exists()) {
+                    output = FileOutputStream(file)
+                    output.write(bytes)
+                }
+            } finally {
+                output?.close()
+                Log.d("Info", "Image saved successfully...")
+            }
+        } catch (e: IOException) {
+            // Log the exception
+            Log.d("Info", "Error saving image... $e")
+        }
+
+        // return File(filesDir, "VID_${simpleDateFormat.format(Date())}.mp4")
+        return file
+    }
+
+
+
+
 }
