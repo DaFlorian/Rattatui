@@ -5,16 +5,16 @@ import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.appcompat.app.AppCompatActivity
 import com.flow.rattatui.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -22,6 +22,7 @@ import java.io.OutputStream
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -98,12 +99,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun createFile(buffer: ByteBuffer): File {
+    fun createFile(buffer: ByteBuffer): File {
         // Function to create a file system object from the buffer of a captured image
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US)
         val simpleDateString = simpleDateFormat.format(Date())
-        val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + "/shoppingbuddy_$simpleDateString.jpeg")
-        Log.d("Info", "Saving image... Path: $file")
+        val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString() + "/rattatui_$simpleDateString.jpeg")
+        Log.d("Info", "Saving file... Path: $file")
 
         try {
             if (file.exists()) {file.delete()}
@@ -117,11 +118,11 @@ class MainActivity : AppCompatActivity() {
                 }
             } finally {
                 output?.close()
-                Log.d("Info", "Image saved successfully...")
+                Log.d("Info", "File saved successfully...")
             }
         } catch (e: IOException) {
             // Log the exception
-            Log.d("Info", "Error saving image... $e")
+            Log.d("Info", "Error saving file... $e")
         }
 
         // return File(filesDir, "VID_${simpleDateFormat.format(Date())}.mp4")
@@ -129,6 +130,37 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun getFileList(){
+        // Function to get the list of files (CSV-Files of menus, receipts etc.)
+        // val filesPath = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString()
+        val filesPath = Environment.getExternalStorageDirectory().toString()  // +"/rattatui";
+        Log.d("Info", "Searching for files in path $filesPath")
 
+        val directory: File = File(filesPath)
+        val fileItems = directory.listFiles()
+
+        // val fileItems = File("$filesPath/*.rattatui.csv")
+        if (fileItems != null) {
+            Log.d("Info", "Found files: " + fileItems.size)
+        }
+
+        if (fileItems != null) {
+            for (i in fileItems.indices) {
+                Log.d("Info", "FileName:" + fileItems[i].name)
+            }
+        }
+        if (fileItems != null) {
+            getFileContent(fileItems[0].absolutePath)
+        }
+
+
+    }
+
+    fun getFileContent(filePath: String){
+        // Function to get the content of a file (e.g. CSV-File with menu or receipt)
+
+
+
+    }
 
 }
