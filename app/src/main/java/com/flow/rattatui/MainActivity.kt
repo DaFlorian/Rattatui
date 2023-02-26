@@ -1,5 +1,6 @@
 package com.flow.rattatui
 
+
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -15,10 +16,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.flow.rattatui.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import com.opencsv.CSVReader
+import com.opencsv.CSVWriter
+import java.io.*
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.*
@@ -130,10 +130,10 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun getFileList(){
+    fun getFileList(): Array<out File>? {
         // Function to get the list of files (CSV-Files of menus, receipts etc.)
         // val filesPath = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString()
-        val filesPath = Environment.getExternalStorageDirectory().toString()  // +"/rattatui";
+        val filesPath = Environment.getExternalStorageDirectory().absolutePath.toString()  // +"/rattatui";
         Log.d("Info", "Searching for files in path $filesPath")
 
         val directory: File = File(filesPath)
@@ -149,17 +149,61 @@ class MainActivity : AppCompatActivity() {
                 Log.d("Info", "FileName:" + fileItems[i].name)
             }
         }
+
+        // Get content of the first file
         if (fileItems != null) {
-            getFileContent(fileItems[0].absolutePath)
+            getCSVFileContent(fileItems[0].absolutePath)
         }
 
-
+        return fileItems
     }
 
-    fun getFileContent(filePath: String){
+
+    fun getCSVFileContent(filePath: String): MutableList<Array<String>>? {
         // Function to get the content of a file (e.g. CSV-File with menu or receipt)
+        val filesPath = Environment.getExternalStorageDirectory().absolutePath.toString()
+        var csvReader: CSVReader? = null
+        var csvData: MutableList<Array<String>> = ArrayList()
+
+        return try {
+            csvReader = CSVReader(FileReader(filePath))
+            csvData = csvReader.readAll()      // Returns: A List of String[], with each String[] representing a line of the file.
+            Log.d("Info", "CSV-File-Content: $csvData")
+
+            csvData
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.d("Error", "getCSVFileContent: $e")
+
+            null
+        }
+    }
 
 
+    fun writeMenuCsvFile(fileName: String, menuName: String, menuDescription: String, menuType: String, menuTime: String, menuCosts: String, menuComment: String): Boolean {
+        // Function to write CSV-File to storage
+        val filesPath = Environment.getExternalStorageDirectory().toString()
+        var writer: CSVWriter? = null
+
+        try {
+            writer = CSVWriter(FileWriter("$filesPath/$fileName"))
+            val data: MutableList<Array<String>> = ArrayList()
+            data.add(arrayOf("menuName", menuName))
+            data.add(arrayOf("menuDescription", menuDescription))
+            data.add(arrayOf("menuType", menuType))
+            data.add(arrayOf("menuTime", menuTime))
+            data.add(arrayOf("menuCosts", menuCosts))
+            data.add(arrayOf("menuComment", menuComment))
+            writer.writeAll(data)                                   // Write data to CSV-File
+            writer.close()
+
+            return true
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.d("Error", "writeMenuCsvFile: $e")
+
+            return false
+        }
 
     }
 

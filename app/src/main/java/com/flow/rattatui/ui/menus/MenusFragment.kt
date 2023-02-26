@@ -30,11 +30,7 @@ class MenusFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val transformViewModel = ViewModelProvider(this).get(MenusViewModel::class.java)
         _binding = FragmentTransformBinding.inflate(inflater, container, false)
         val root: View = binding.root
