@@ -11,7 +11,11 @@
 .externalNativeBuild
 .cxx
 local.properties
-/.gradle/7.4/executionHistory/*
+/.gradle/7.4/executionHistory/*.*
 /.gradle/file-system.probe
 /.gradle/7.4/fileHashes/fileHashes.bin
-
+/.gradle/7.4/fileHashes/fileHashesCache.bin
+/.gradle/7.4/fileHashes/fileHashes/fileHashes.bin
+/.gradle/7.4/fileHashes/fileHashes/fileHashes.lock
+/.gradle/7.4/fileHashes/fileHashes/resourceHashesCache.bin
+/.gradle/buildOutputCleanup/buildOutputCleanup.lock
