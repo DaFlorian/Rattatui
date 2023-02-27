@@ -31,23 +31,23 @@ class MenusFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val transformViewModel = ViewModelProvider(this).get(MenusViewModel::class.java)
+        val transformViewModel = ViewModelProvider(this)[MenusViewModel::class.java]
         _binding = FragmentTransformBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val recyclerView = binding.recyclerviewTransform
         val adapter = TransformAdapter()
         recyclerView.adapter = adapter
-        transformViewModel.texts.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+        adapter.submitList(transformViewModel.name.asList())
         return root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 
     class TransformAdapter :
         ListAdapter<String, TransformViewHolder>(object : DiffUtil.ItemCallback<String>() {

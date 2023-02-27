@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -150,19 +152,43 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Get content of the first file
-        if (fileItems != null) {
-            getCSVFileContent(fileItems[0].absolutePath)
-        }
-
         return fileItems
+    }
+
+
+    fun getMenuObjectData(csvContent: MutableList<Array<String>>?): Array<String>? {
+        // Function to return a Menu-Object from the content of a CSV-File
+        // var csvData: MutableList<Array<String>>
+
+        // Loop through the CSV-Content (one header row and one data row)
+        if (csvContent != null) {
+            //var ratMenu: MutableList<Array<String>>? = null
+            var firstRow = true
+            for (row in csvContent) {
+                // Loop through the cells if not the header row
+                if (!firstRow){
+                    // This is a data row
+                    for ((i, cell) in row.withIndex()) {
+                        // Log cell content for debugging purposes
+                        Log.d("Info", "RatMenu-cell: $i: $cell")
+                    }
+                    return row      // val row: Array<String>
+                } else {
+                    // This is the header row
+                    firstRow = false
+                }
+            }
+            return null
+        } else {
+            return null
+        }
     }
 
 
     fun getCSVFileContent(filePath: String): MutableList<Array<String>>? {
         // Function to get the content of a file (e.g. CSV-File with menu or receipt)
-        val filesPath = Environment.getExternalStorageDirectory().absolutePath.toString()
-        var csvReader: CSVReader? = null
+        // val filesPath = Environment.getExternalStorageDirectory().absolutePath.toString()
+        lateinit var csvReader: CSVReader
         var csvData: MutableList<Array<String>> = ArrayList()
 
         return try {
@@ -207,4 +233,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+
 }
+
+
