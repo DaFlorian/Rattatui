@@ -7,8 +7,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+// import androidx.lifecycle.LiveData
+// import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
         val filesPath = Environment.getExternalStorageDirectory().absolutePath.toString()  // +"/rattatui";
         Log.d("Info", "Searching for files in path $filesPath")
 
-        val directory: File = File(filesPath)
+        val directory = File(filesPath)
         val fileItems = directory.listFiles()
 
         // val fileItems = File("$filesPath/*.rattatui.csv")
@@ -189,11 +189,11 @@ class MainActivity : AppCompatActivity() {
         // Function to get the content of a file (e.g. CSV-File with menu or receipt)
         // val filesPath = Environment.getExternalStorageDirectory().absolutePath.toString()
         lateinit var csvReader: CSVReader
-        var csvData: MutableList<Array<String>> = ArrayList()
+        // var csvData: MutableList<Array<String>> = ArrayList()
 
         return try {
             csvReader = CSVReader(FileReader(filePath))
-            csvData = csvReader.readAll()      // Returns: A List of String[], with each String[] representing a line of the file.
+            val csvData = csvReader.readAll()      // Returns: A List of String[], with each String[] representing a line of the file.
             Log.d("Info", "CSV-File-Content: $csvData")
 
             csvData
@@ -209,10 +209,10 @@ class MainActivity : AppCompatActivity() {
     fun writeMenuCsvFile(fileName: String, menuName: String, menuDescription: String, menuType: String, menuTime: String, menuCosts: String, menuComment: String): Boolean {
         // Function to write CSV-File to storage
         val filesPath = Environment.getExternalStorageDirectory().toString()
-        var writer: CSVWriter? = null
+        // var writer: CSVWriter? = null
 
         try {
-            writer = CSVWriter(FileWriter("$filesPath/$fileName"))
+            val writer = CSVWriter(FileWriter("$filesPath/$fileName"))
             val data: MutableList<Array<String>> = ArrayList()
             data.add(arrayOf("menuName", menuName))
             data.add(arrayOf("menuDescription", menuDescription))
